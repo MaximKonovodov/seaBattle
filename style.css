@@ -1,0 +1,49 @@
+.ship {
+	background: rgb(0, 0, 0);
+}
+
+.killed, .wounded {
+	background: #b32945;
+}
+
+.miss {
+	background: rgb(184, 173, 173);
+}
+
+.empty {
+	background: rgb(23, 108, 219);
+}
+
+#battleFieldBadCompany, #battleField1 {
+	width: 320px;
+	height: 320px;
+	margin: 40px;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+#battleFieldBadCompany>div, #battleField1>div {
+	margin: 0px;
+	border: 1px solid white;
+	display: block;
+}
+
+.ship:hover, .killed:hover, .wounded:hover, .miss:hover, .empty:hover, #buttons>input:hover {
+	opacity: .86;
+}
+
+#buttons>input {
+	width: 150px;
+	background-color: #555555;
+	border: none;
+	color: white;
+	padding: 15px 32px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	margin: 4px;
+	cursor: pointer;
+	visibility: hidden;
+}

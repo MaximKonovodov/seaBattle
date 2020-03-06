@@ -22,15 +22,8 @@ class BattleField {
 	}
 
 	createMaps() {
-		const empty = 0;
 		const map = document.getElementById('battleFieldBadCompany');
 		const mapEnemy = document.getElementById('battleFieldBadCompanyEnemy');
-
-		let arr = [];
-
-		for (let widthCoordinate = 1; widthCoordinate <= this.fieldSize; widthCoordinate++) {
-			arr.push(empty);
-		}
 
 		for (let heightCoordinate = 1; heightCoordinate <= this.fieldSize; heightCoordinate++) {
 			for (let widthCoordinate = 1; widthCoordinate <= this.fieldSize; widthCoordinate++) {
@@ -46,7 +39,6 @@ class BattleField {
 				//map two
 				fieldParams.isEnemy = true;
 				this.addFieldToMap(mapEnemy, fieldParams)
-
 			}
 		}
 	}
@@ -56,7 +48,6 @@ class BattleField {
 
 		map.append(div);
 		div.className = "empty";
-
 
 		// make map adaptive to map size
 		div.style.width = map.offsetWidth / params.fieldSize - 2 + "px";
@@ -78,7 +69,6 @@ class BattleField {
 				const divs = document.querySelector(`div.battleField div[pos_id='${firstCoord + y}_${secondCoord}_']`);
 				if (divs == null) return false;
 			}
-
 			//check ships, wherever it is
 			for (let x = -1; x < 2; x++) {
 				for (let y = -1; y < length + 1; y++) {
@@ -88,17 +78,13 @@ class BattleField {
 					}
 				}
 			};
-
 		}
-
 		if (direction == "toRight") {
-
 			//check null, where will be ship
 			for (let x = 0; x < length; x++) {
 				const divs = document.querySelector(`div.battleField div[pos_id='${firstCoord}_${secondCoord + x}_']`);
 				if (divs == null) return false;
 			}
-
 			//check ships, wherever it are
 			for (let y = -1; y < 2; y++) {
 				for (let x = -1; x < length + 1; x++) {
@@ -107,14 +93,11 @@ class BattleField {
 						if (divs.className !== "empty") return false;
 					}
 				}
-
 			};
 		}
 	}
 
-	addDecks(length, direction, firstCoord, secondCoord, isDraw) {
-
-		if (isDraw == false) return (console.log("УПС! не нарисовалось"));
+	addDecks(length, direction, firstCoord, secondCoord) {
 
 		//drawing horizontally
 		if (direction == "toRight") {
@@ -139,57 +122,42 @@ class BattleField {
 		let cells = []
 
 		for (let i = 1; i < numberOfDecks + 1; i++) {
-			cells.push(`div${i}`);
+			cells.push();
 		}
 		if (mouse == "over") {
 			if (this.direction == "toRight") {
 				for (let i = 0; i < numberOfDecks; i++) {
 					cells[i] = document.querySelector(`div.battleField div[pos_id='${firstCoord}_${secondCoord + i}_']`);
-
 					if (cells[i] == null) return false;
 				}
-				for (let i = 0; i < numberOfDecks; i++) {
-					cells[i].style.background = "black";
-					cells[i].style.opacity = ".7";
-				}
 			}
-
 			if (this.direction == "toDown") {
 				for (let i = 0; i < numberOfDecks; i++) {
 					cells[i] = document.querySelector(`div.battleField div[pos_id='${firstCoord + i}_${secondCoord}_']`);
-
 					if (cells[i] == null) return false;
 				}
-				for (let i = 0; i < numberOfDecks; i++) {
-					cells[i].style.background = "black";
-					cells[i].style.opacity = ".7";
-				}
+			}
+			for (let i = 0; i < numberOfDecks; i++) {
+				cells[i].style.background = "black";
+				cells[i].style.opacity = ".7";
 			}
 		}
-
 		if (mouse == "out") {
 			if (this.direction == "toRight") {
 				for (let i = 0; i < numberOfDecks; i++) {
 					cells[i] = document.querySelector(`div.battleField div[pos_id='${firstCoord}_${secondCoord + i}_']`);
-
 					if (cells[i] == null) return false;
 				}
-				for (let i = 0; i < numberOfDecks; i++) {
-					cells[i].style.background = "";
-					cells[i].style.opacity = "";
-				}
 			}
-
 			if (this.direction == "toDown") {
 				for (let i = 0; i < numberOfDecks; i++) {
 					cells[i] = document.querySelector(`div.battleField div[pos_id='${firstCoord + i}_${secondCoord}_']`);
-
 					if (cells[i] == null) return false;
 				}
-				for (let i = 0; i < numberOfDecks; i++) {
-					cells[i].style.background = "";
-					cells[i].style.opacity = "";
-				}
+			}
+			for (let i = 0; i < numberOfDecks; i++) {
+				cells[i].style.background = "";
+				cells[i].style.opacity = "";
 			}
 		}
 	}
@@ -209,9 +177,7 @@ class BattleField {
 				return (console.log("не прошло в checkingTheCells"))
 			} else {
 				this.addDecks(1, this.direction, firstCoord, secondCoord);
-
 			}
-
 			this.oneDeckShipCount++;
 		});
 
@@ -245,7 +211,6 @@ class BattleField {
 			} else {
 				this.addDecks(2, this.direction, firstCoord, secondCoord);
 			}
-
 			this.twoDeckShipCount++;
 		});
 
@@ -346,9 +311,7 @@ class BattleField {
 				return;
 			} else {
 				this.addDecks(4, this.direction, firstCoord, secondCoord);
-
 			}
-
 			this.fourDeckShipCount++;
 		});
 
@@ -429,20 +392,17 @@ class BattleField {
 			max = Math.floor(max);
 			return Math.floor(Math.random() * (max - min)) + min; //The maximum does not turn on, the minimum turns on
 		}
-
-		function shoot() {
-
-			const firstCoord = getRandomInt(1, 11);
-			const secondCoord = getRandomInt(1, 11);
-
+		let shoot = () => {
+			const firstCoord = getRandomInt(1, this.fieldSize + 1);
+			const secondCoord = getRandomInt(1, this.fieldSize + 1);
 			const divShooted = document.querySelector(`div.battleField div[pos_id='${firstCoord}_${secondCoord}_']`);
 
 			if (divShooted.className == "miss") return shoot();
 			if (divShooted.className == "empty") { divShooted.className = "miss"; return };
-			if (divShooted.className == "wounded") setTimeout(shoot, 500);
+			if (divShooted.className == "wounded") return shoot();
 			if (divShooted.className == "ship") {
 				divShooted.className = "wounded";
-				return setTimeout(shoot, 500);
+				return setTimeout(shoot, 300);
 			}
 		}
 
@@ -450,8 +410,6 @@ class BattleField {
 
 		map2.addEventListener("click", (ev) => {
 			if (event.target.className != 'empty') return;
-
-			setTimeout(shoot, 500);
 
 			let div = event.target;
 			const pos_ids = div.attributes.pos_id.value.split('_', 2);
@@ -462,6 +420,7 @@ class BattleField {
 				div.className = "wounded";
 			} else {
 				div.className = "miss";
+				setTimeout(shoot, 300);
 			}
 		});
 
@@ -473,63 +432,57 @@ class BattleField {
 			max = Math.floor(max);
 			return Math.floor(Math.random() * (max - min)) + min; //The maximum does not turn on, the minimum turns on
 		}
-		function getRandomCoordHorizontal(decks) {
-			return [getRandomInt(0, 10), getRandomInt(0, 10 - decks)];
+		let getRandomCoordHorizontal = (decks) => {
+			return [getRandomInt(0, this.fieldSize), getRandomInt(0, this.fieldSize - decks)];
 		}
-		function getRandomCoordVertical(decks) {
-			return [getRandomInt(0, 10 - decks), getRandomInt(0, 10)];
+		let getRandomCoordVertical = (decks) => {
+			return [getRandomInt(0, this.fieldSize - decks), getRandomInt(0, this.fieldSize)];
 		}
-		function checkingTheCells(decks, direction, firstCoord, secondCoord, battleFieldArray) {
-
+		function getCoolCoordsAndDirection(decks) {
+			const direction = getRandomInt(0, 2)
 			if (direction == 1) {
+				const [firstCoord, secondCoord] = getRandomCoordVertical(decks);
 				//check ships, wherever it is, verticaly
 				for (let x = -1; x < 2; x++) {
 					for (let y = -1; y < decks + 1; y++) {
 						if (battleFieldArray[firstCoord + y] == undefined) continue;
 						if (battleFieldArray[firstCoord + y][secondCoord + x] == undefined) continue;
-						if (battleFieldArray[firstCoord + y][secondCoord + x] == 1) return false;
+						if (battleFieldArray[firstCoord + y][secondCoord + x] == 1) return getCoolCoordsAndDirection(decks);
 					}
 				};
+				return [direction, firstCoord, secondCoord];
 			}
-
 			if (direction == 0) {
+				const [firstCoord, secondCoord] = getRandomCoordHorizontal(decks);
 				//check ships, wherever it is, horizontaly
 				for (let y = -1; y < 2; y++) {
 					for (let x = -1; x < decks + 1; x++) {
 						if (battleFieldArray[firstCoord + y] == undefined) continue;
 						if (battleFieldArray[firstCoord + y][secondCoord + x] == undefined) continue;
-						if (battleFieldArray[firstCoord + y][secondCoord + x] == 1) return false;
+						if (battleFieldArray[firstCoord + y][secondCoord + x] == 1) return getCoolCoordsAndDirection(decks);
 					}
 				};
+				return [direction, firstCoord, secondCoord];
 			}
 		}
+		function changeBattleFieldArray(decks, position) {
+			let [direction, firstCoord, secondCoord] = getCoolCoordsAndDirection(decks);
 
-		function changeBattleFieldArray(decks, position, battleFieldArray) {
-			let [firstCoord0, secondCoord0] = getRandomCoordHorizontal(decks)
-			let [firstCoord1, secondCoord1] = getRandomCoordVertical(decks)
-			let direction = getRandomInt(0, 2)
-
-			if (checkingTheCells(decks, direction, firstCoord0, secondCoord0, battleFieldArray) == false) {//check horizontal random coords
-				return changeBattleFieldArray(decks, position, battleFieldArray);
-			}
-			if (checkingTheCells(decks, direction, firstCoord1, secondCoord1, battleFieldArray) == false) {//check vertical random coords
-				return changeBattleFieldArray(decks, position, battleFieldArray);
-			}
 			if (direction == 0) {
 				for (let i = 0; i < decks; i++) {
-					battleFieldArray[firstCoord0][secondCoord0 + position] = 1;
+					battleFieldArray[firstCoord][secondCoord + position] = 1;
 					position++;
 				}
 			}
 			if (direction == 1) {
 				for (let i = 0; i < decks; i++) {
-					battleFieldArray[firstCoord1 + position][secondCoord1] = 1;
+					battleFieldArray[firstCoord + position][secondCoord] = 1;
 					position++;
 				}
 			}
 			return battleFieldArray;
 		}
-		function oneOfShips(decks, battleFieldArray) {
+		function oneOfShips(decks) {
 			let position = 0;
 			for (let i = 1; i <= decks; i++) {
 				if (decks == 1) {
@@ -547,18 +500,15 @@ class BattleField {
 				position++;
 			}
 		}
-		let battleFieldArray = [
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-			[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-		];
+		let battleFieldArray = [];
+
+		for (let y = 0; y < this.fieldSize; y++) {
+			const arr = [];
+			for (let x = 0; x < this.fieldSize; x++) {
+				arr.push(0);
+			}
+			battleFieldArray.push(arr.slice());
+		}
 
 		for (let i = 1; i <= 10; i++) {
 			let decks;
@@ -566,7 +516,7 @@ class BattleField {
 			if (i > 1 & i < 4) decks = 3;
 			if (i > 3 & i < 7) decks = 2;
 			if (i > 6 & i < 11) decks = 1;
-			battleFieldArray = oneOfShips(decks, battleFieldArray)
+			battleFieldArray = oneOfShips(decks)
 		}
 
 		return battleFieldArray;
@@ -578,10 +528,10 @@ class BattleField {
 		playButton.addEventListener("click", (event) => {
 			if (turnedOn == 1) return console.log("игра уже играется")
 			if (this.oneDeckShipCount == 4 & this.twoDeckShipCount == 3 & this.threeDeckShipCount == 2 & this.fourDeckShipCount == 1) {
-				this.fire();
 				this.enemysShips();
+				this.fire();
 				turnedOn++;
-			}
+			} else console.log("расставь все корабли");
 		});
 	}
 
